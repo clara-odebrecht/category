@@ -1,19 +1,32 @@
+import sys
+sys.path.append('.')
+
 from src.models.category import Category
-
 from unittest import TestCase
+import pytest
 
-class TryTesting(TestCase):
-    _category = Category('Eltrônicos')
 
-    def test_model_instance(self):
-        assert isinstance(self._category, Category)
-
-    def test_attr_values(self):
-        assert self._category.name == 'Eltrônicos'
-        assert self._category.description == None
-        assert self._category.identifier == None
-
-    def test_attr_types(self):
-        assert isinstance(self._category.name, str)
-        assert isinstance(self._category.description, None)
-        assert isinstance(self._category.identifier, None)
+class TryTesting(TestCase):        
+    def test_name_none(self):
+        with pytest.raises(TypeError):
+            c = Category(None, 'Bebida')
+        
+    def test_name_empty(self):
+        with pytest.raises(ValueError):
+            c = Category('', 'Bebida')
+        
+    def test_name_len(self):
+        with pytest.raises(ValueError):
+            c = Category('Bebida' * 100, 'Nacional')     
+            
+    def test_name_type(self):
+        with pytest.raises(TypeError):
+            c = Category(100, 'Nacional')                   
+            
+    def test_description_type(self):
+        with pytest.raises(TypeError):
+            c = Category('Bebida', 10.6)       
+            
+    def test_description_len(self):
+        with pytest.raises(ValueError):
+            c = Category('Bebida', 'Nacional' * 255)      
