@@ -1,15 +1,12 @@
-from sqlalchemy import Column, Integer, String
+from src.models.base_model import BaseModel
+from sqlalchemy import Column, String
 from sqlalchemy.orm import validates
 from src.utils.validators import validate_len, validate_not_empty, validate_type
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
 
 
-class Category(Base):
+class Category(BaseModel):
     __tablename__ = 'category'
 
-    identifier = Column('id', Integer, primary_key=True)
     name = Column('name', String(length=100), nullable=False)
     description = Column('description', String(length=255), nullable=True)
 
@@ -27,3 +24,4 @@ class Category(Base):
     def validate_description(self, key, description):
         description = validate_type(description, str, key)
         return validate_len(description, 255, key)
+        
